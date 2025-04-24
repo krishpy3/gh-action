@@ -10,6 +10,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - run: |
+          set -x
           echo "Hello"
           python3 src/test.py
           echo "Done"
@@ -19,6 +20,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - run: |
+          set -x
           echo "Hello"
           export a=hello
           python3 src/test.py
