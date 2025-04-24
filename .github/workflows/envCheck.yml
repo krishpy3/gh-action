@@ -13,4 +13,13 @@ jobs:
           echo "Hello"
           python3 src/test.py
           echo "Done"
-          
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - run: |
+          echo "Hello"
+          export a=hello
+          python3 src/test.py
+          echo "Done"
