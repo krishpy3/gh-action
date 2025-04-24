@@ -1,0 +1,16 @@
+name: Build and Release Workflow
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - run: |
+          echo "Hello"
+          python3 src/test.py
+          echo "Done"
+          
