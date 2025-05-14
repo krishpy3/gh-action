@@ -12,4 +12,7 @@ jobs:
       - name: Print GitHub context
         run: |
           echo '${{ toJson(github) }}'
-      - run: echo '${{ github.job }}'
+      - name: Print run URL (Enterprise safe)
+        run: |
+           echo "Run URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
