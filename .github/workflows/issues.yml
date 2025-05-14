@@ -1,0 +1,14 @@
+name: Print GitHub Context
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  print-context:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print GitHub context
+        run: |
+          echo '${{ toJson(github) }}'
