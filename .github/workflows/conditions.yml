@@ -18,7 +18,9 @@ jobs:
     steps:
       - name: Set Output
         id: set_output
-        run: echo "flag=${{ github.event.inputs.flag }}" >> $GITHUB_OUTPUT
+        run: |
+            exit 1
+            echo "flag=${{ github.event.inputs.flag }}" >> $GITHUB_OUTPUT
 
   job_success_1:
     name: Run if Success() and Flag is true - Job 1
