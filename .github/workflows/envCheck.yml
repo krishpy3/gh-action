@@ -1,27 +1,50 @@
-name: Build and Release Workflow
+name: Conditional Jobs with Manual Approval
 
 on:
   push:
 
 jobs:
-  test:
+  job1:
+    name: First Job
     runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.set-output.outputs.result }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - run: |
-          set -x +e
-          echo "Hello"
-          python3 src/test.py
-          echo "Done"
-  test2:
+      - name: Step 1
+        run: echo "Running Job 1"
+      - name: Set output
+        id: set-output
+        run: echo "result=success" >> $GITHUB_OUTPUT
+
+  approval:
+    name: Wait for Approval
     runs-on: ubuntu-latest
+    needs: job1
+    environment:
+      name: prod
+    outputs:
+      approved: ${{ steps.decision.outputs.approved }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - run: |
-          set -x +e
-          echo "Hello"
-          export a=hello
-          python3 src/test.py
-          echo "Done"
+      - name: Awaiting manual approval
+        run: echo "Approved manually"
+      - name: Set approved output
+        id: decision
+        run: echo "approved=true" >> $GITHUB_OUTPUT
+
+  job2:
+    name: Second Job (If Approved)
+    if: needs.approval.outputs.approved == 'true'
+    runs-on: ubuntu-latest
+    needs: approval
+    steps:
+      - name: Run if approved
+        run: echo "Job 2 running after approval."
+
+  job3:
+    name: Third Job (If Rejected)
+    if: needs.approval.outputs.approved != 'true'
+    runs-on: ubuntu-latest
+    needs: approval
+    steps:
+      - name: Run if rejected
+        run: echo "Job 3 running after rejection."
