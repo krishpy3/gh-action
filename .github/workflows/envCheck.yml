@@ -43,7 +43,7 @@ jobs:
 
   job3:
     name: Third Job (If Rejected)
-    if: always()
+    if: always() && needs.approval.outputs.approved != ''
     runs-on: ubuntu-latest
     needs: approval
     steps:
