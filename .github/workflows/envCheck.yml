@@ -2,6 +2,7 @@ name: Conditional Jobs with Manual Approval
 
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   job1:
