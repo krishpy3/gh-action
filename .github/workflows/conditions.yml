@@ -23,7 +23,7 @@ jobs:
   job_success_1:
     name: Run if Success() and Flag is true - Job 1
     needs: echo_input
-    if: ${{ success() && needs.echo_input.outputs.flag == 'true' }}
+    if: ${{ success() && inputs.flag == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Job 1 (success & flag=true)"
@@ -31,7 +31,7 @@ jobs:
   job_success_2:
     name: Run if Success() and Flag is true - Job 2
     needs: echo_input
-    if: ${{ success() && needs.echo_input.outputs.flag != 'true' }}
+    if: ${{ success() && inputs.flag != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Job 2 (success & flag=true)"
@@ -39,7 +39,7 @@ jobs:
   job_failure_1:
     name: Run if Failure() and Flag is true - Job 1
     needs: echo_input
-    if: ${{ failure() && needs.echo_input.outputs.flag == 'true' }}
+    if: ${{ failure() && inputs.flag == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Job 1 (failure & flag=true)"
@@ -47,7 +47,7 @@ jobs:
   job_failure_2:
     name: Run if Failure() and Flag is true - Job 2
     needs: echo_input
-    if: ${{ failure() && needs.echo_input.outputs.flag != 'true' }}
+    if: ${{ failure() && inputs.flag != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Job 2 (failure & flag=true)"
@@ -55,7 +55,7 @@ jobs:
   job_always_1:
     name: Run if Always() and Flag is true - Job 1
     needs: echo_input
-    if: ${{ always() && needs.echo_input.outputs.flag == 'true' }}
+    if: ${{ always() && inputs.flag == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Job 1 (always & flag=true)"
@@ -63,7 +63,7 @@ jobs:
   job_always_2:
     name: Run if Always() and Flag is true - Job 2
     needs: echo_input
-    if: ${{ always() && needs.echo_input.outputs.flag != 'true' }}
+    if: ${{ always() && inputs.flag != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Job 2 (always & flag=true)"
