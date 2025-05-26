@@ -1,0 +1,69 @@
+name: Conditional Jobs Based on Boolean Input
+
+on:
+  workflow_dispatch:
+    inputs:
+      flag:
+        type: boolean
+        required: true
+        default: false
+        description: 'Run conditional jobs if true'
+
+jobs:
+  echo_input:
+    name: Echo the Boolean Input
+    runs-on: ubuntu-latest
+    outputs:
+      flag: ${{ steps.set_output.outputs.flag }}
+    steps:
+      - name: Set Output
+        id: set_output
+        run: echo "flag=${{ github.event.inputs.flag }}" >> $GITHUB_OUTPUT
+
+  job_success_1:
+    name: Run if Success() and Flag is true - Job 1
+    needs: echo_input
+    if: ${{ success() && needs.echo_input.outputs.flag == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job 1 (success & flag=true)"
+
+  job_success_2:
+    name: Run if Success() and Flag is true - Job 2
+    needs: echo_input
+    if: ${{ success() && needs.echo_input.outputs.flag != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job 2 (success & flag=true)"
+
+  job_failure_1:
+    name: Run if Failure() and Flag is true - Job 1
+    needs: echo_input
+    if: ${{ failure() && needs.echo_input.outputs.flag == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job 1 (failure & flag=true)"
+
+  job_failure_2:
+    name: Run if Failure() and Flag is true - Job 2
+    needs: echo_input
+    if: ${{ failure() && needs.echo_input.outputs.flag != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job 2 (failure & flag=true)"
+
+  job_always_1:
+    name: Run if Always() and Flag is true - Job 1
+    needs: echo_input
+    if: ${{ always() && needs.echo_input.outputs.flag == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job 1 (always & flag=true)"
+
+  job_always_2:
+    name: Run if Always() and Flag is true - Job 2
+    needs: echo_input
+    if: ${{ always() && needs.echo_input.outputs.flag != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job 2 (always & flag=true)"

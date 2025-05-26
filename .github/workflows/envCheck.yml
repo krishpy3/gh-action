@@ -1,7 +1,7 @@
 name: Conditional Jobs with Manual Approval
 
 on:
-  push:
+  # push:
   workflow_dispatch:
 
 jobs:
