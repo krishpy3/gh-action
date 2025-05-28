@@ -39,7 +39,8 @@ jobs:
     needs: approval
     steps:
       - name: Run if approved
-        run: echo "Job 2 running after approval."
+        run: |
+          echo '${{ toJson(github) }}'
 
   job3:
     name: Third Job (If Rejected)
@@ -48,4 +49,5 @@ jobs:
     needs: approval
     steps:
       - name: Run if rejected
-        run: echo "Job 3 running after rejection."
+        run: |
+          echo '${{ toJson(github) }}'
