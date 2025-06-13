@@ -41,4 +41,4 @@ jobs:
     if: '!needs.check.outputs.is_even_day'
     uses: ./.github/workflows/reusable.yml
     with:
-      environment: ${{ toJSON(needs.path-check.outputs.src) }}
+      environment: ${{ fromJson(needs.path-check.outputs.src) }}
