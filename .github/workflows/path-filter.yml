@@ -13,7 +13,7 @@ jobs:
         id: set-output
         run: |
           DAY=$(date +%d)
-          if [ $((10#$DAY % 2)) -eq 0 ]; then
+          if [ $((10#$DAY % 2)) -ne 0 ]; then
             echo "Even day: $DAY"
             echo "is_even_day=true" >> "$GITHUB_OUTPUT"
           fi
