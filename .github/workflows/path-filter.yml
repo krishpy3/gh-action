@@ -21,7 +21,7 @@ jobs:
   path-check:
     runs-on: ubuntu-latest
     needs: check
-    if: needs.check.outputs.is_even_day =='true'
+    if: '!needs.check.outputs.is_even_day'
     outputs:
       src: ${{ steps.filter.outputs.src }}
     steps:
@@ -38,7 +38,7 @@ jobs:
 
   databricks-job:
     needs: [ check, path-check]
-    if: needs.check.outputs.is_even_day =='true'
+    if: '!needs.check.outputs.is_even_day'
     uses: ./.github/workflows/reusable.yml
     with:
       environment: ${{ toJSON(needs.path-check.outputs.src) }}
