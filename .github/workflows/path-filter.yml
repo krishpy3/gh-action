@@ -37,9 +37,8 @@ jobs:
               - 'src/**'
 
   databricks-job:
-    runs-on: ubuntu-latest
     needs: [ check, path-check]
     if: needs.check.outputs.is_even_day =='true'
-    steps:
-      - name: Run only if databricks/ changed
-        run: echo "${{ toJSON(steps.path-check.outputs.src) }}"
+    uses: ./.github/workflows/reusable.yml
+    with:
+      environment: ${{ toJSON(needs.path-check.outputs.src) }}

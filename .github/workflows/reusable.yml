@@ -1,0 +1,20 @@
+name: reusable-template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+jobs:
+  run-steps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Print message
+        run: echo "Running Step 1"
+
+      - name: Step 2 - Simulate logic
+        run: echo "Processing job..."
+
+      - name: Step 3 - Finalize
+        run: echo "steps completed"
