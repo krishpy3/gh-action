@@ -8,21 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Multiline env variable using YAML block scalar |
-      MY_LIST: |
-        apple
-        banana
-        cherry
+      MY_LIST: '["aaaaaaaaaaaaaaaaaaa","b"]'
 
     steps:
+      - run: python -V
       - name: Run Python Script
         shell: python
         run: |
           import os
+          import json
+          import requests
 
           # Read and split the multiline environment variable
-          raw_value = os.environ["MY_LIST"]
-          items = raw_value.splitlines()
+          items = json.loads(os.environ["MY_LIST"])
 
           print("List from MY_LIST env variable:")
           for i, item in enumerate(items, start=1):
