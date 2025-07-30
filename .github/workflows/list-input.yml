@@ -1,0 +1,29 @@
+name: Use Multiline Env in Python
+
+on:
+  workflow_dispatch:
+
+jobs:
+  process-list:
+    runs-on: ubuntu-latest
+
+    env:
+      # Multiline env variable using YAML block scalar |
+      MY_LIST: |
+        apple
+        banana
+        cherry
+
+    steps:
+      - name: Run Python Script
+        shell: python
+        run: |
+          import os
+
+          # Read and split the multiline environment variable
+          raw_value = os.environ["MY_LIST"]
+          items = raw_value.splitlines()
+
+          print("List from MY_LIST env variable:")
+          for i, item in enumerate(items, start=1):
+              print(f"{i}. {item}")
