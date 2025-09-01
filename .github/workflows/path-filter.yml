@@ -1,7 +1,8 @@
 name: Databricks Change Check
 
 on:
-  push:
+  # push:
+    workflow_dispatch:
 
 jobs:
   check:

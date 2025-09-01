@@ -1,0 +1,47 @@
+name: CI — Build JSON then Call Template
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-json:
+    name: Build JSON with jq
+    runs-on: ubuntu-latest
+    outputs:
+      payload: ${{ steps.mkjson.outputs.payload }}
+    steps:
+      - name: Ensure jq is present
+        run: jq --version || (sudo apt-get update && sudo apt-get install -y jq)
+
+      - name: Create JSON
+        id: mkjson
+        shell: bash
+        run: |
+          # Example inputs — change as needed
+          USER="Krish"
+          TEAM="Platform"
+          NUM=7
+
+          # Build a compact JSON string with jq
+          JSON=$(jq -c -n --arg user "$USER" --arg team "$TEAM" --argjson num "$NUM" \
+            '{user:$user, team:$team, num:$num, meta:{ts: env.GITHUB_RUN_NUMBER|tonumber? // 0}}')
+
+          echo "JSON=$JSON"
+
+          # Expose it as an output for downstream jobs
+          # Use GITHUB_OUTPUT for multi-line safety
+          echo "payload=$JSON" >> "$GITHUB_OUTPUT"
+
+  use-template:
+    name: Call reusable template and pass argparse
+    needs: build-json
+    uses: ./.github/workflows/template-run-script.yml
+    with:
+      name: "Navaneethakrishnan"
+      env: "prod"
+      count: "3"
+      payload_json: ${{ needs.build-json.outputs.payload }}
+      # Anything here will show up in "unknown args" in the script:
+      extra_args: "--unparsed-flag alpha --another one two three"

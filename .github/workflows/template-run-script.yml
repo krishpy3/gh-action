@@ -1,0 +1,51 @@
+name: Reusable — Run Argparse Script
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: Name to pass as --name
+        required: true
+        type: string
+      env:
+        description: Environment (dev|uat|prod)
+        required: false
+        default: dev
+        type: string
+      count:
+        description: Integer count
+        required: false
+        default: "1"
+        type: string
+      payload_json:
+        description: JSON string to pass as --payload-json
+        required: false
+        type: string
+      extra_args:
+        description: "Extra raw args (space-separated) forwarded to the script"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run script
+        run: |
+          chmod +x scripts/argparse_demo.py
+          set -x
+          python scripts/argparse_demo.py \
+            --name "${{ inputs.name }}" \
+            --env  "${{ inputs.env }}" \
+            --count "${{ inputs.count }}" \
+            $([ -n "${{ inputs.payload_json }}" ] && echo --payload-json "${{ inputs.payload_json }}") \
+            ${{ inputs.extra_args }}
