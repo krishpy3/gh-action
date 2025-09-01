@@ -47,5 +47,5 @@ jobs:
             --name "${{ inputs.name }}" \
             --env  "${{ inputs.env }}" \
             --count "${{ inputs.count }}" \
-            --payload-json "${{ inputs.payload_json }}") \
+            --payload-json "${{ inputs.payload_json }}" \
             ${{ inputs.extra_args }}
