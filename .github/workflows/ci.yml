@@ -45,6 +45,6 @@ jobs:
       name: "Navaneethakrishnan"
       env: "prod"
       count: "3"
-      payload_json: ${{ toJSON(needs.build-json.outputs.payload) }}
+      payload_json: '${{ toJSON(needs.build-json.outputs.payload) }}'
       # Anything here will show up in "unknown args" in the script:
       extra_args: "--unparsed-flag alpha --another one two three"
