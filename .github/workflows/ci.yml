@@ -19,20 +19,23 @@ jobs:
         id: mkjson
         shell: bash
         run: |
-          # Example inputs — change as needed
-          USER="Krish"
-          TEAM="Platform"
-          NUM=7
+            USER="Krish"
+            TEAM="Platform"
+            NUM=7
 
-          # Build a compact JSON string with jq
-          JSON=$(jq -c -n --arg user "$USER" --arg team "$TEAM" --argjson num "$NUM" \
-            '{user:$user, team:$team, num:$num, meta:{ts: env.GITHUB_RUN_NUMBER|tonumber? // 0}}')
+            # Build a compact JSON string with jq
+            # - If GITHUB_RUN_NUMBER is missing, default to "0" then convert to number
+            JSON=$(jq -c -n \
+            --arg user "$USER" \
+            --arg team "$TEAM" \
+            --argjson num "$NUM" \
+            '{user:$user, team:$team, num:$num, meta:{ts: ((env.GITHUB_RUN_NUMBER // "0") | tonumber)}}'
+            )
 
-          echo "JSON=$JSON"
+            echo "JSON=$JSON"
 
-          # Expose it as an output for downstream jobs
-          # Use GITHUB_OUTPUT for multi-line safety
-          echo "payload=$JSON" >> "$GITHUB_OUTPUT"
+            # Expose as output for downstream jobs (quote to preserve the whole string)
+            echo "payload=$JSON" >> "$GITHUB_OUTPUT"
 
   use-template:
     name: Call reusable template and pass argparse
